@@ -21,3 +21,6 @@
 
 
 .env
+
+# Deployment backups (optional - uncomment to ignore backups)
+# deployment-backups/
