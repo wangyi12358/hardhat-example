@@ -5,6 +5,7 @@
   "scripts": {
     "format": "prettier --write \"contracts/**/*.sol\"",
     "extract-abi": "node scripts/extract-abi.ts",
+    "check-balance": "node scripts/check-balance.ts",
     "prepare": "lefthook install"
   },
   "devDependencies": {
@@ -22,5 +23,8 @@
     "typescript": "~5.8.0",
     "ultracite": "7.0.12",
     "viem": "^2.44.4"
+  },
+  "dependencies": {
+    "url": "^0.11.4"
   }
 }
