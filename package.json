@@ -3,18 +3,24 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "format": "prettier --write \"contracts/**/*.sol\""
+    "format": "prettier --write \"contracts/**/*.sol\"",
+    "extract-abi": "node scripts/extract-abi.ts",
+    "prepare": "lefthook install"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.3.11",
     "@nomicfoundation/hardhat-ignition": "^3.0.7",
     "@nomicfoundation/hardhat-toolbox-viem": "^5.0.2",
     "@types/node": "^22.19.7",
+    "dotenv": "^17.2.3",
     "forge-std": "github:foundry-rs/forge-std#v1.9.4",
     "hardhat": "^3.1.5",
+    "lefthook": "^2.0.15",
     "prettier": "^3.8.1",
     "prettier-plugin-solidity": "^2.2.1",
+    "tsx": "^4.21.0",
     "typescript": "~5.8.0",
-    "ultracite": "^7.0.12",
+    "ultracite": "7.0.12",
     "viem": "^2.44.4"
   }
 }
