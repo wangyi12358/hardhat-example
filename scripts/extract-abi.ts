@@ -5,7 +5,7 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-async function extractABI(contractName: string) { 
+async function extractABI(contractName: string) {
   // 读取编译后的合约文件
   const artifactPath = path.join(
     __dirname,
@@ -53,7 +53,7 @@ async function main() {
   // 注意：hardhat run 会把脚本路径作为第一个参数，所以合约名是第二个参数
   const args = process.argv.slice(2);
   const contractName = args[0] || "MyToken";
-  
+
   await extractABI(contractName);
 }
 

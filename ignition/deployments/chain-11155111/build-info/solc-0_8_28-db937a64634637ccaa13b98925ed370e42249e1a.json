@@ -1,0 +1,39 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_28-db937a64634637ccaa13b98925ed370e42249e1a",
+  "solcVersion": "0.8.28",
+  "solcLongVersion": "0.8.28+commit.7893614a",
+  "userSourceNameMap": {
+    "contracts/MyToken.sol": "project/contracts/MyToken.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "evmVersion": "cancun",
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode",
+            "evm.deployedBytecode",
+            "evm.methodIdentifiers",
+            "metadata"
+          ]
+        }
+      },
+      "remappings": []
+    },
+    "sources": {
+      "project/contracts/MyToken.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.20;\n\n/**\n * @title ERC20 Token Standard Interface\n */\ninterface IERC20 {\n    function totalSupply() external view returns (uint256);\n    function balanceOf(address account) external view returns (uint256);\n    function transfer(address to, uint256 amount) external returns (bool);\n    function allowance(address owner, address spender) external view returns (uint256);\n    function approve(address spender, uint256 amount) external returns (bool);\n    function transferFrom(address from, address to, uint256 amount) external returns (bool);\n\n    event Transfer(address indexed from, address indexed to, uint256 value);\n    event Approval(address indexed owner, address indexed spender, uint256 value);\n}\n\n/**\n * @title MikaToken - ERC20 Standard Token\n * @dev 实现完整的 ERC-20 标准代币合约\n */\ncontract MyToken is IERC20 {\n    // 代币基本信息\n    string public name;\n    string public symbol;\n    uint8 public constant decimals = 18;\n    \n    // 代币总量\n    uint256 public totalSupply;\n    \n    // 余额映射\n    mapping(address => uint256) private _balances;\n    \n    // 授权映射 (owner => (spender => amount))\n    mapping(address => mapping(address => uint256)) private _allowances;\n\n    /**\n     * @dev 构造函数，初始化代币\n     * @param _name 代币名称\n     * @param _symbol 代币符号\n     * @param _totalSupply 代币总供应量\n     */\n    constructor(\n        string memory _name,\n        string memory _symbol,\n        uint256 _totalSupply\n    ) {\n        name = _name;\n        symbol = _symbol;\n        totalSupply = _totalSupply * 10**decimals; // 转换为带小数位的总量\n        \n        // 将所有代币分配给部署者\n        _balances[msg.sender] = totalSupply;\n        emit Transfer(address(0), msg.sender, totalSupply);\n    }\n\n    /**\n     * @dev 查询账户余额\n     */\n    function balanceOf(address account) public view override returns (uint256) {\n        return _balances[account];\n    }\n\n    /**\n     * @dev 转账代币\n     * @param to 接收地址\n     * @param amount 转账数量\n     */\n    function transfer(address to, uint256 amount) public override returns (bool) {\n        address owner = msg.sender;\n        _transfer(owner, to, amount);\n        return true;\n    }\n\n    /**\n     * @dev 查询授权额度\n     */\n    function allowance(address owner, address spender) public view override returns (uint256) {\n        return _allowances[owner][spender];\n    }\n\n    /**\n     * @dev 授权代币\n     * @param spender 被授权地址\n     * @param amount 授权数量\n     */\n    function approve(address spender, uint256 amount) public override returns (bool) {\n        address owner = msg.sender;\n        _approve(owner, spender, amount);\n        return true;\n    }\n\n    /**\n     * @dev 从授权额度中转账\n     * @param from 发送地址\n     * @param to 接收地址\n     * @param amount 转账数量\n     */\n    function transferFrom(address from, address to, uint256 amount) public override returns (bool) {\n        address spender = msg.sender;\n        _spendAllowance(from, spender, amount);\n        _transfer(from, to, amount);\n        return true;\n    }\n\n    /**\n     * @dev 内部转账函数\n     */\n    function _transfer(address from, address to, uint256 amount) internal {\n        require(from != address(0), \"ERC20: transfer from the zero address\");\n        require(to != address(0), \"ERC20: transfer to the zero address\");\n\n        uint256 fromBalance = _balances[from];\n        require(fromBalance >= amount, \"ERC20: transfer amount exceeds balance\");\n        \n        unchecked {\n            _balances[from] = fromBalance - amount;\n            _balances[to] += amount;\n        }\n\n        emit Transfer(from, to, amount);\n    }\n\n    /**\n     * @dev 内部授权函数\n     */\n    function _approve(address owner, address spender, uint256 amount) internal {\n        require(owner != address(0), \"ERC20: approve from the zero address\");\n        require(spender != address(0), \"ERC20: approve to the zero address\");\n\n        _allowances[owner][spender] = amount;\n        emit Approval(owner, spender, amount);\n    }\n\n    /**\n     * @dev 消费授权额度\n     */\n    function _spendAllowance(address owner, address spender, uint256 amount) internal {\n        uint256 currentAllowance = allowance(owner, spender);\n        if (currentAllowance != type(uint256).max) {\n            require(currentAllowance >= amount, \"ERC20: insufficient allowance\");\n            unchecked {\n                _approve(owner, spender, currentAllowance - amount);\n            }\n        }\n    }\n}\n"
+      }
+    }
+  }
+}

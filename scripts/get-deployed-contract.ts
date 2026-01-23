@@ -1,6 +1,6 @@
+import * as dotenv from "dotenv";
 import { createPublicClient, http } from "viem";
 import { sepolia } from "viem/chains";
-import * as dotenv from "dotenv";
 
 dotenv.config();
 
@@ -25,11 +25,11 @@ async function main() {
     if (receipt.contractAddress) {
       console.log("\n✅ 合约部署成功！");
       console.log(`合约地址: ${receipt.contractAddress}`);
-      console.log(`\n在 Etherscan 上查看:`);
+      console.log("\n在 Etherscan 上查看:");
       console.log(
         `https://sepolia.etherscan.io/address/${receipt.contractAddress}`
       );
-      console.log(`\n交易详情:`);
+      console.log("\n交易详情:");
       console.log(`https://sepolia.etherscan.io/tx/${txHash}`);
     } else {
       console.log("⚠️  未找到合约地址，这可能不是合约部署交易");
