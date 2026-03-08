@@ -1,3 +1,4 @@
 {
-  "MyTokenModule#MyToken": "0x9190037E43a2aC44FF1261F1Bd25cC45DA5C766e"
+  "MyTokenModule#MyToken": "0x9190037E43a2aC44FF1261F1Bd25cC45DA5C766e",
+  "TokenSaleOnlyModule#TokenMarket": "0xdeE00B49Eeaf540aAF43c4bDc3f463CF28E03ac8"
 }

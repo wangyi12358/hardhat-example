@@ -125,6 +125,43 @@ pnpm hardhat ignition deploy ignition/modules/MyToken.ts --network sepolia
 - 总供应量：1,000,000 MIKA
 - 所有代币会分配给部署者
 
+### 2.1 部署 TokenSale（TokenMarket）到 Sepolia
+
+合约 `TokenSale.sol` 中实现的是 **TokenMarket**：用 ETH 买卖项目代币，价格由 Chainlink ETH/USD 预言机提供。
+
+**方式一：同时部署新代币 + TokenMarket（适合从零开始）**
+
+```bash
+pnpm hardhat ignition deploy ignition/modules/TokenSale.ts --network sepolia
+```
+
+会依次：部署 MyToken → 部署 TokenMarket（绑定该代币 + Sepolia 的 Chainlink ETH/USD 预言机）→ 给 TokenMarket 转入 100,000 MIKA 用于出售。可选参数（传参示例见下）：
+
+- `initialPriceUSD`：代币单价（18 位小数），默认 `1e18`（1 USD）
+- `amountToFund`：拨给 TokenMarket 的代币数量（18 位小数），默认 100_000 * 1e18
+
+**方式二：只部署 TokenMarket，使用已有代币地址**
+
+若你已经部署过 MyToken，只需部署销售合约并绑定该代币：
+
+```bash
+pnpm hardhat ignition deploy ignition/modules/TokenSaleOnly.ts --network sepolia \
+  --parameters '{"TokenSaleOnlyModule":{"projectTokenAddress":"0x你的MyToken地址","initialPriceUSD":"1000000000000000000"}}'
+```
+
+将 `0x你的MyToken地址` 换成 `deployed_addresses.json` 里的 MyToken 地址；`initialPriceUSD` 为 1 USD 时即 `1000000000000000000`（1e18）。
+
+**自定义参数示例（TokenSale.ts）**
+
+例如：单价 0.5 USD，拨给销售合约 50,000 代币：
+
+```bash
+pnpm hardhat ignition deploy ignition/modules/TokenSale.ts --network sepolia \
+  --parameters '{"TokenSaleModule":{"initialPriceUSD":"500000000000000000","amountToFund":"50000000000000000000000"}}'
+```
+
+部署完成后，新合约地址会出现在终端输出和 `ignition/deployments/chain-11155111/deployed_addresses.json` 中。
+
 ### 3. 查询代币余额
 
 ```bash

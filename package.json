@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "format": "prettier --write \"contracts/**/*.sol\"",
-    "extract-abi": "node scripts/extract-abi.ts",
+    "extract-abi": "tsx scripts/extract-abi.ts",
+    "extract-abi:token-sale": "tsx scripts/extract-abi.ts TokenMarket TokenSale.sol",
     "check-balance": "node scripts/check-balance.ts",
     "transfer": "node scripts/transfer.ts",
     "prepare": "lefthook install"
